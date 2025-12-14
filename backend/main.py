@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from api.upload import router as upload_router
-from api.analyze import router as analyze_router
+from api.analyse import router as analyze_router
 
 app = FastAPI(title="VisaVerse AI")
 

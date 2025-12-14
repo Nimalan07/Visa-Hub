@@ -1,8 +1,8 @@
 from fastapi import APIRouter
-from services.ocr_service import extract_text
+from services.ocr_services import extract_text
 from services.rule_engine import validate_rules
 from services.risk_scorer import calculate_risk
-from services.llm_explainer import explain_issues
+from services.llm_explaner import explain_issues
 
 router = APIRouter()
 
