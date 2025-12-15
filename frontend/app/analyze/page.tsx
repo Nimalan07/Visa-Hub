@@ -1,29 +1,84 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+
 export default function AnalyzePage() {
+  const params = useSearchParams();
+  const country = params.get("country") || "Germany";
+
+  const [riskLevel, setRiskLevel] = useState("LOW");
+  const [issues, setIssues] = useState<string[]>([]);
+  const [explanation, setExplanation] = useState("");
+
+  useEffect(() => {
+    const text = sessionStorage.getItem("passportText") || "";
+    const problems: string[] = [];
+
+    // 🔍 Extract expiry date
+    const expiryMatch = text.match(/Date of Expiry:\s*(\d{2}-\d{2}-\d{4})/);
+    if (expiryMatch) {
+      const expiryDate = new Date(expiryMatch[1].split("-").reverse().join("-"));
+      const today = new Date();
+      const diffMonths =
+        (expiryDate.getFullYear() - today.getFullYear()) * 12 +
+        (expiryDate.getMonth() - today.getMonth());
+
+      if (diffMonths < 6) {
+        problems.push("Passport expires in less than 6 months");
+      }
+    } else {
+      problems.push("Expiry date not found");
+    }
+
+    // 🔍 Date format check
+    if (!text.match(/\d{2}-\d{2}-\d{4}/)) {
+      problems.push(`Invalid date format for ${country} visa`);
+    }
+
+    // Final decision
+    if (problems.length > 0) {
+      setRiskLevel("HIGH");
+      setIssues(problems);
+      setExplanation(
+        `${country} requires a passport valid for at least 6 months and proper date formats. Please correct the issues before applying.`
+      );
+    } else {
+      setRiskLevel("LOW");
+      setIssues(["No critical issues found"]);
+      setExplanation(`All ${country} visa requirements are satisfied.`);
+    }
+  }, []);
+
   return (
-    <main className="min-h-screen bg-gray-100 p-10">
-      <div className="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow">
-        <h2 className="text-2xl font-bold mb-4">
-          Document Risk Analysis
-        </h2>
+    <div className="p-10 max-w-xl mx-auto bg-white shadow rounded">
+      <h2 className="text-2xl font-bold">Document Risk Analysis</h2>
 
-        <p className="mb-2">
-          <strong>Risk Level:</strong>{" "}
-          <span className="text-red-600 font-semibold">HIGH</span>
-        </p>
+      <p className="text-gray-500 mt-2">
+        Country Rules Applied: {country} (Demo)
+      </p>
 
-        <ul className="list-disc ml-6 text-gray-700">
-          <li>Passport expires in 5 months</li>
-          <li>Name mismatch between passport and visa form</li>
-          <li>Date format invalid for Germany visa</li>
-        </ul>
+      <p className="mt-4">
+        <strong>Risk Level:</strong>{" "}
+        <span
+          className={`px-3 py-1 rounded-full font-semibold ${
+            riskLevel === "HIGH" ? "bg-red-600 text-white" : "bg-green-500 text-white"
+          }`}
+        >
+          {riskLevel}
+        </span>
+      </p>
 
-        <div className="mt-6 bg-green-100 p-4 rounded">
-          <strong>AI Suggestion:</strong>
-          <p>
-            Germany requires 6 months passport validity. Renew before applying.
-          </p>
-        </div>
+      <ul className="list-disc ml-6 mt-4">
+        {issues.map((i, idx) => (
+          <li key={idx}>{i}</li>
+        ))}
+      </ul>
+
+      <div className="mt-6 bg-gray-100 p-4 rounded">
+        <strong>AI Explanation:</strong>
+        <p>{explanation}</p>
       </div>
-    </main>
+    </div>
   );
 }
