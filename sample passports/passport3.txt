@@ -1,0 +1,14 @@
+PASSPORT (SAMPLE DOCUMENT)
+
+Country: Federal Republic of DemoLand (Germany - Sample)
+Passport Number: GMD9876543
+
+Surname: MÜLLER
+Given Name: ANNA
+Date of Birth: 02-11-1997
+Nationality: German
+
+Date of Issue: 01-05-2016
+Date of Expiry: 01-05-2026
+
+Sex: F

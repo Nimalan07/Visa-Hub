@@ -1,0 +1,14 @@
+PASSPORT (SAMPLE DOCUMENT)
+
+Country: United States of DemoLand
+Passport No: USD4567891
+
+Last Name: JOHNSON
+First Name: MICHAEL
+DOB: 08/22/1998
+Nationality: American
+
+Issued On: 09/15/2018
+Expires On: 09/15/2028
+
+Gender: M
