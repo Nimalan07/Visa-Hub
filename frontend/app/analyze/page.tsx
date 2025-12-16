@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-export default function AnalyzePage() {
+function AnalyzeContent() {
   const params = useSearchParams();
   const country = params.get("country") || "Germany";
 
@@ -15,7 +15,6 @@ export default function AnalyzePage() {
     const text = sessionStorage.getItem("passportText") || "";
     const problems: string[] = [];
 
-    // 🔍 Extract expiry date
     const expiryMatch = text.match(/Date of Expiry:\s*(\d{2}-\d{2}-\d{4})/);
     if (expiryMatch) {
       const expiryDate = new Date(expiryMatch[1].split("-").reverse().join("-"));
@@ -31,12 +30,10 @@ export default function AnalyzePage() {
       problems.push("Expiry date not found");
     }
 
-    // 🔍 Date format check
     if (!text.match(/\d{2}-\d{2}-\d{4}/)) {
       problems.push(`Invalid date format for ${country} visa`);
     }
 
-    // Final decision
     if (problems.length > 0) {
       setRiskLevel("HIGH");
       setIssues(problems);
@@ -48,7 +45,7 @@ export default function AnalyzePage() {
       setIssues(["No critical issues found"]);
       setExplanation(`All ${country} visa requirements are satisfied.`);
     }
-  }, []);
+  }, [country]);
 
   return (
     <div className="p-10 max-w-xl mx-auto bg-white shadow rounded">
@@ -62,7 +59,9 @@ export default function AnalyzePage() {
         <strong>Risk Level:</strong>{" "}
         <span
           className={`px-3 py-1 rounded-full font-semibold ${
-            riskLevel === "HIGH" ? "bg-red-600 text-white" : "bg-green-500 text-white"
+            riskLevel === "HIGH"
+              ? "bg-red-600 text-white"
+              : "bg-green-500 text-white"
           }`}
         >
           {riskLevel}
@@ -80,5 +79,13 @@ export default function AnalyzePage() {
         <p>{explanation}</p>
       </div>
     </div>
+  );
+}
+
+export default function AnalyzePage() {
+  return (
+    <Suspense fallback={<p className="text-center mt-10">Analyzing document...</p>}>
+      <AnalyzeContent />
+    </Suspense>
   );
 }
