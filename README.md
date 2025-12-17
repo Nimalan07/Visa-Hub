@@ -1,8 +1,7 @@
 # Visa-Hub– Document Intelligence Hub
 
 **AI that prevents visa rejections before you apply**
-
-VisaVerse AI is an AI-powered web platform that analyzes visa and passport documents **before submission**, flags rejection risks, and explains issues in **simple human language** — so people don’t lose dreams due to tiny document mistakes.
+Visa Hub is an AI-powered web platform that analyzes visa and passport documents **before submission**, flags rejection risks, and explains issues in **simple human language** — so people don’t lose dreams due to tiny document mistakes.
 
 ---
 
@@ -19,7 +18,7 @@ Global mobility fails because of documents, not dreams.
 
 ## 💡 The Solution
 
-VisaVerse AI acts as an **intelligent document pre-check system**.
+Visa Hub AI acts as an **intelligent document pre-check system**.
 
 Think:
 > **Grammarly for visa and travel documents**
@@ -65,6 +64,6 @@ Instead of legal jargon, users get:
 - **Logic:** Rule-based validation + explainable AI
 - **Deployment:** Vercel
 - **Data:** Synthetic demo data (hackathon-safe)
-
+- **Backend:** FastAPI,Uvicorn,Pydantic
 ---
 
