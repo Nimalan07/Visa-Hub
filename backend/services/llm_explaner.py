@@ -1,6 +1,6 @@
 import openai
 
-openai.api_key = "YOUR_API_KEY"
+openai.api_key = "sk-abcdef1234567890abcdef1234567890abcdef12"
 
 def explain_issues(issues):
     prompt = f"""
